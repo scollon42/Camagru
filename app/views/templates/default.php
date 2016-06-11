@@ -9,10 +9,12 @@
 		<nav>
 			<ul>
 				<li><a href="/">Home</a></li>
+				<li><a href="#gallery">Gallery</a></li>
 				<?php if (!$_SESSION['connected_as']): ?>
 					<li><a href="/signIn">Sign In</a></li>
 					<li><a href="/signUp">Sign Up</a></li>
 				<?php else: ?>
+					<li><a href="#studio">Studio</a></li>
 					<li><a href="/me">My account</a></li>
 					<li><a href="Logout">Logout</a></li>
 				<?php endif; ?>

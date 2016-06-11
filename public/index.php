@@ -9,23 +9,14 @@ use \App\Autoloader;
 
 define('ROOT', dirname(__DIR__));
 
-// require ROOT . '/app/Autoloader.php';
-// Autoloader::load();
-
-
-// TMP --> Will be autoloaded
-require ROOT . '\app\models\Database.php';
-require ROOT . '\app\models\UsersDatabase.php';
-
-require ROOT . '\core\controller\Controller.php';
-require ROOT . '\app\controller\AppController.php';
-require ROOT . '\app\controller\IndexController.php';
-require ROOT . '\app\controller\UserController.php';
-
-require ROOT . '\core\router\RouterException.php';
-require ROOT . '\core\router\Route.php';
-require ROOT . '\core\router\Router.php';
-// TMP END
+//Will be a class Autoloader
+function __autoload($class_name)
+{
+	$path = explode('\\', $class_name);
+	$name = array_pop($path);
+	$path = strtolower(implode('\\', $path));
+	require ROOT . '\\' . $path . '\\' . $name . '.php';
+}
 
 
 $router = new \Core\Router\Router($_GET['url']);
