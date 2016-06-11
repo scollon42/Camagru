@@ -14,7 +14,6 @@ class Router
 	private $_routes = [];
 	private $_nameRoutes = [];
 
-
 	public function __construct($url = '/')
 	{
 		$this->_url = $url;
@@ -39,8 +38,6 @@ class Router
 		{
 			if ($route->match($this->_url))
 			 	$route->exec();
-			// else
-			// 	throw new RouterException('No matching routes');
 		}
 	}
 
