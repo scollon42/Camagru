@@ -5,6 +5,7 @@
 		<title>Camagru</title>
 	</head>
 	<body>
+		<header><h1>Camagru</h1></header>
 		<nav>
 			<ul>
 				<li><a href="/">Home</a></li>
