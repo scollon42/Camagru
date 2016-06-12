@@ -16,6 +16,12 @@ class Controller
 		require($this->_viewPath . 'templates' .  DIRECTORY_SEPARATOR . $this->_template . '.php');
 	}
 
+	protected function redirect($url)
+	{
+		header('location: ' . $url);
+		return ;
+	}
+
 	public function forbidden()
 	{
 		header('HTTP/1.0 403 Forbidden');

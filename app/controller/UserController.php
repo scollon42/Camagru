@@ -29,8 +29,7 @@ class UserController extends AppController
 			if ($user != False)
 			{
 				$_SESSION['connected_as'] = $user['id'];
-				header('Location: /me');
-				exit ;
+				$this->redirect('/me');
 			}
 			else
 				$errors = True;
@@ -47,14 +46,9 @@ class UserController extends AppController
 			extract($_POST);
 			$token = $this->_userDb->addNewUser(compact('login', 'password', 'mail'));
 			if ($token != False)
-			{
-				header('Location: /');
-				exit ;
-			}
+				$this->redirect('/');
 			else
-			{
 				$errors = True;
-			}
 		}
 		$this->render('user.signUp', compact('errors'));
 	}
@@ -62,10 +56,7 @@ class UserController extends AppController
 	public function show()
 	{
 		if (empty($_SESSION) || !$_SESSION['connected_as'])
-		{
-			header('location: /signIn');
-			exit ;
-		}
+			$this->redirect('/signIn');
 
 		$userInfo = $this->_userDb->getUserById($_SESSION['connected_as']);
 		$user = array(
@@ -74,10 +65,7 @@ class UserController extends AppController
 			'cdate' => $userInfo['creation_date']
 		);
 		if (!$user)
-		{
-			header('location: /signIn');
-			exit ;
-		}
+			$this->redirect('/signIn');
 
 		$this->render('user.show', compact('user'));
 	}
@@ -86,24 +74,23 @@ class UserController extends AppController
 	{
 		if (isset($_SESSION['connected_as']))
 			$_SESSION['connected_as'] = False;
-		header('Location: /');
-		exit ;
+		$this->redirect('/');
 	}
 
 	public function update()
 	{
-		if (empty($_SESSION) || !$_SESSION['connected_as'])
-		{
-			header('location: /signIn');
-			exit ;
-		}
+		$errors = False;
+		if (!isset($_SESSION['connected_as']) || !$_SESSION['connected_as'])
+			$this->redirect('/signIn');
+
 		if (!empty($_POST))
 		{
-			header('location: /me');
-			exit ;
+			extract($_POST);
+			$this->_userDb->updateUserPassword($_SESSION['connected_as'], $password);
+			$this->redirect('/me');
 		}
 		$user = $this->_userDb->getUserById($_SESSION['connected_as']);
-		$this->render('user.update', compact('user'));
+		$this->render('user.update', compact('user', 'errors'));
 	}
 }
 

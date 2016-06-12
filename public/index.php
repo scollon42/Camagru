@@ -22,7 +22,8 @@ $router->post('/signIn', 'User#signIn');
 
 $router->get('/me', 'User#show');
 $router->get('/logout', 'User#logout');
-$router->get('/updateMe', 'User#update');
+$router->get('/me/update', 'User#update');
+$router->post('/me/update', 'User#update');
 
 $router->run();
 
