@@ -9,15 +9,8 @@ use \App\Autoloader;
 
 define('ROOT', dirname(__DIR__));
 
-//Will be a class Autoloader
-function __autoload($class_name)
-{
-	$path = explode('\\', $class_name);
-	$name = array_pop($path);
-	$path = strtolower(implode('\\', $path));
-	require ROOT . '\\' . $path . '\\' . $name . '.php';
-}
-
+require implode(DIRECTORY_SEPARATOR, array(ROOT, 'app', 'Autoloader.php'));
+Autoloader::register();
 
 $router = new \Core\Router\Router($_GET['url']);
 
@@ -29,6 +22,7 @@ $router->post('/signIn', 'User#signIn');
 
 $router->get('/me', 'User#show');
 $router->get('/logout', 'User#logout');
+$router->get('/updateMe', 'User#update');
 
 $router->run();
 

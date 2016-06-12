@@ -36,7 +36,7 @@ class UserController extends AppController
 				$errors = True;
 		}
 
-		$this->render('signIn', compact('errors'));
+		$this->render('user.signIn', compact('errors'));
 	}
 
 	public function signUp()
@@ -56,7 +56,7 @@ class UserController extends AppController
 				$errors = True;
 			}
 		}
-		$this->render('signUp', compact('errors'));
+		$this->render('user.signUp', compact('errors'));
 	}
 
 	public function show()
@@ -79,7 +79,7 @@ class UserController extends AppController
 			exit ;
 		}
 
-		$this->render('show', compact('user'));
+		$this->render('user.show', compact('user'));
 	}
 
 	public function logout()
@@ -88,6 +88,22 @@ class UserController extends AppController
 			$_SESSION['connected_as'] = False;
 		header('Location: /');
 		exit ;
+	}
+
+	public function update()
+	{
+		if (empty($_SESSION) || !$_SESSION['connected_as'])
+		{
+			header('location: /signIn');
+			exit ;
+		}
+		if (!empty($_POST))
+		{
+			header('location: /me');
+			exit ;
+		}
+		$user = $this->_userDb->getUserById($_SESSION['connected_as']);
+		$this->render('user.update', compact('user'));
 	}
 }
 

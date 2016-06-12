@@ -13,7 +13,8 @@ class AppController extends Controller
 
 	public function __construct()
 	{
-		$this->_viewPath = ROOT . '\app\views\\';
+		$vpath = str_replace('/', DIRECTORY_SEPARATOR, '/app/views/');
+		$this->_viewPath = ROOT . $vpath;
 	}
 }
 

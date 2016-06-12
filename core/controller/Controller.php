@@ -11,9 +11,9 @@ class Controller
 	{
 		ob_start();
 		extract($variables);
-		require($this->_viewPath . str_replace('.', '\\', $view) . '.php');
+		require($this->_viewPath . str_replace('.', DIRECTORY_SEPARATOR, $view) . '.php');
 		$content = ob_get_clean();
-		require($this->_viewPath . 'templates\\' . $this->_template . '.php');
+		require($this->_viewPath . 'templates' .  DIRECTORY_SEPARATOR . $this->_template . '.php');
 	}
 
 	public function forbidden()

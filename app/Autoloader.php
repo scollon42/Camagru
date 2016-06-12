@@ -12,15 +12,13 @@ class Autoloader
 		spl_autoload_register(array(__CLASS__, 'autoload'));
 	}
 
- 	static function autoload($class)
+ 	static function autoload($class_name)
 	{
-		var_dump($class);
-		// if (strpos($class, __NAMESPACE__ . '\\') === 0)
-		// {
-		// 	$class = str_replace(__NAMESPACE__ . ' \\', '', $class);
-		// 	var_dump($class);
-		// 	require __DIR__ . '/' . $class . '.php';
-		// }
+		$class_name = str_replace('\\', DIRECTORY_SEPARATOR, $class_name);
+		$path = explode(DIRECTORY_SEPARATOR, $class_name);
+		$name = array_pop($path);
+		$path = strtolower(implode(DIRECTORY_SEPARATOR, $path));
+		require ROOT . DIRECTORY_SEPARATOR . $path . DIRECTORY_SEPARATOR . $name . '.php';
 	}
 }
 

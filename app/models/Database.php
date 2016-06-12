@@ -18,7 +18,7 @@ class Database
 
 	public function __construct()
 	{
-		require ROOT . '\config\database.php';
+		require ROOT . '/config/database.php';
 		try
 		{
 			self::$_db = new \PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
