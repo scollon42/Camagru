@@ -4,12 +4,21 @@ namespace Core\Controller;
 
 class Controller
 {
-	protected $_viewPath;
-	protected $_template;
+	protected 	$_viewPath;
+	protected 	$_template;
+	protected	$_session;
+	protected	$_flash;
+
+	public function __construct()
+	{
+		$this->_session = \Core\Session\Session::getInstance();
+		$this->_flash = \Core\Flash\Flash::getInstance($this->_session);
+	}
 
 	protected function render($view, $variables = [])
 	{
 		ob_start();
+		$flash = $this->_flash->getFlash();
 		extract($variables);
 		require($this->_viewPath . str_replace('.', DIRECTORY_SEPARATOR, $view) . '.php');
 		$content = ob_get_clean();
@@ -19,7 +28,6 @@ class Controller
 	protected function redirect($url)
 	{
 		header('location: ' . $url);
-		return ;
 	}
 
 	public function forbidden()

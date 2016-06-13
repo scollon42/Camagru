@@ -125,7 +125,7 @@ class UsersDatabase
 		$user = $this->getUserByLogin($login);
 
 		if (!$user)
-			return (True);
+			return (False);
 		if ($user['password'] != $hashPassword)
 			return (False);
 		// if (!$user['active'])

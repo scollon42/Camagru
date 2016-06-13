@@ -1,8 +1,3 @@
-<?php
-	if ($errors == True)
-		echo "<p>Something happened ! Try again...</p>";
- ?>
-
  <form method="post" action="signUp">
  	<label for="login">Login</label>
  	<input type="text" placeholder="Your login" required="Required field" class="form" id="login" name="login" />

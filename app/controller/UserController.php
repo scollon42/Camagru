@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use \App\Controller\AppController;
 use \App\Models\UsersDatabase;
+use \Core\Session\Session;
+use \Core\Flash\Flash;
 
 /**
  *
@@ -20,7 +22,8 @@ class UserController extends AppController
 
 	public function signIn()
 	{
-		$errors = False;
+		if ($this->_session->exists('connected_as'))
+			$this->redirect('/me');
 
 		if (!empty($_POST))
 		{
@@ -28,14 +31,15 @@ class UserController extends AppController
 			$user = $this->_userDb->getUserByAuth($login, $password);
 			if ($user != False)
 			{
-				$_SESSION['connected_as'] = $user['id'];
+				$this->_session['connected_as'] = $user['id'];
+				$this->_flash->addFlash('You are now connected !');
 				$this->redirect('/me');
 			}
 			else
-				$errors = True;
+				$this->_flash->addFlash('Something wrong happened', 'error');
 		}
 
-		$this->render('user.signIn', compact('errors'));
+		$this->render('user.signIn');
 	}
 
 	public function signUp()
@@ -53,44 +57,55 @@ class UserController extends AppController
 		$this->render('user.signUp', compact('errors'));
 	}
 
+	public function logout()
+	{
+		$this->_session->delete('connected_as');
+		$this->_flash->addFlash('You are now logout !');
+		$this->redirect('/');
+	}
+
 	public function show()
 	{
-		if (empty($_SESSION) || !$_SESSION['connected_as'])
+		if (!$this->_session->exists('connected_as'))
 			$this->redirect('/signIn');
 
-		$userInfo = $this->_userDb->getUserById($_SESSION['connected_as']);
+		$userInfo = $this->_userDb->getUserById($this->_session['connected_as']);
+		if (!$userInfo)
+			$this->redirect('/signIn');
+
 		$user = array(
 			'login' => ucfirst($userInfo['login']),
 			'mail' => $userInfo['mail'],
 			'cdate' => $userInfo['creation_date']
 		);
-		if (!$user)
-			$this->redirect('/signIn');
 
 		$this->render('user.show', compact('user'));
 	}
 
-	public function logout()
-	{
-		if (isset($_SESSION['connected_as']))
-			$_SESSION['connected_as'] = False;
-		$this->redirect('/');
-	}
-
 	public function update()
 	{
-		$errors = False;
-		if (!isset($_SESSION['connected_as']) || !$_SESSION['connected_as'])
+		if (!$this->_session->exists('connected_as'))
 			$this->redirect('/signIn');
 
 		if (!empty($_POST))
 		{
 			extract($_POST);
-			$this->_userDb->updateUserPassword($_SESSION['connected_as'], $password);
+			$this->_userDb->updateUserPassword($this->_session['connected_as'], $password);
 			$this->redirect('/me');
 		}
-		$user = $this->_userDb->getUserById($_SESSION['connected_as']);
-		$this->render('user.update', compact('user', 'errors'));
+		$user = $this->_userDb->getUserById($this->_session['connected_as']);
+		$this->render('user.update', compact('user'));
+	}
+
+	public function delete()
+	{
+		if (!$this->_session->exists('connected_as') || !isset($_POST['delete']))
+		{
+			$this->redirect('/');
+		}
+
+		$this->_userDb->deleteUserAccount($this->_session['connected_as']);
+		$this->redirect('/me/logout');
 	}
 }
 
