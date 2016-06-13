@@ -7,18 +7,9 @@ use \Core\Session\Session;
 class Flash
 {
 
-    const KEY = 'flash';
+    const KEY = 'cFlash';
 
     private $_session;
-
-	static private $_instance;
-
-	static public function getInstance(Session $session)
-	{
-		if (is_null(self::$_instance))
-			self::$_instance = new Flash($session);
-		return self::$_instance;
-	}
 
     public function __construct(Session $session)
     {

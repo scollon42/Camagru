@@ -19,6 +19,16 @@
 						creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 					)"
 		);
+		$pdo->exec("CREATE TABLE `gallery`
+					(
+						id INT(4) NOT NULL AUTO_INCREMENT,
+						image_path VARCHAR(255) NOT NULL,
+						name VARCHAR(255) NOT NULL,
+						user_id INT(4) NOT NULL,
+						creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+						image_like INT(4) NOT NULL DEFAULT '0' , PRIMARY KEY (`id`)
+					)"
+		);
 	}
 	catch (Exception $e)
 	{

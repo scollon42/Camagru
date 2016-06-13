@@ -12,7 +12,7 @@ class Controller
 	public function __construct()
 	{
 		$this->_session = \Core\Session\Session::getInstance();
-		$this->_flash = \Core\Flash\Flash::getInstance($this->_session);
+		$this->_flash = new \Core\Flash\Flash($this->_session);
 	}
 
 	protected function render($view, $variables = [])
@@ -28,6 +28,7 @@ class Controller
 	protected function redirect($url)
 	{
 		header('location: ' . $url);
+		exit;
 	}
 
 	public function forbidden()

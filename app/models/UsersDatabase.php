@@ -9,6 +9,7 @@
 namespace App\Models;
 
 use \App\Models\Database;
+use \App\Models\Exception;
 
 class UsersDatabase
 {

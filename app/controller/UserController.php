@@ -50,9 +50,12 @@ class UserController extends AppController
 			extract($_POST);
 			$token = $this->_userDb->addNewUser(compact('login', 'password', 'mail'));
 			if ($token != False)
+			{
+				$this->_flash->addFlash('Account created ! You can connect yourself and join us :)');
 				$this->redirect('/');
+			}
 			else
-				$errors = True;
+				$this->_flash->addFlash('Something wrong happened', 'error');
 		}
 		$this->render('user.signUp', compact('errors'));
 	}
@@ -91,11 +94,12 @@ class UserController extends AppController
 		{
 			extract($_POST);
 			$this->_userDb->updateUserPassword($this->_session['connected_as'], $password);
-			$this->redirect('/me');
+			$this->_flash->addFlash('Password updated');
 		}
 		$user = $this->_userDb->getUserById($this->_session['connected_as']);
 		$this->render('user.update', compact('user'));
 	}
+
 
 	public function delete()
 	{
@@ -104,6 +108,7 @@ class UserController extends AppController
 			$this->redirect('/');
 		}
 
+		$this->_flash->addFlash('Account destroyed');
 		$this->_userDb->deleteUserAccount($this->_session['connected_as']);
 		$this->redirect('/me/logout');
 	}
