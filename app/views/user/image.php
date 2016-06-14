@@ -11,11 +11,14 @@
 	<hr />
 	<!-- comments section -->
 	<div>
-		<h3>Add your comment :</h3>
-		<form method='post' action=''>
-			<input type='textarea'/>
-			<button type='submit'>Add</button>
-		</form>
+		<?php if (\App\App::isAuth()): ?>
+			<h3>Add your comment :</h3>
+			<form method='post' action=''>
+				<input type='textarea'/>
+				<button type='submit'>Add</button>
+			</form>
+		<? endif; ?>
+
 		<h3>Comment :</h3>
 		<div>
 			<center><p>There is no comments for now :(</p></center>

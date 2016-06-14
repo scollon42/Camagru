@@ -18,9 +18,10 @@ class Autoloader
 		$path = explode(DIRECTORY_SEPARATOR, $class_name);
 		$name = array_pop($path);
 		$path = strtolower(implode(DIRECTORY_SEPARATOR, $path));
-		require ROOT . DIRECTORY_SEPARATOR . $path . DIRECTORY_SEPARATOR . $name . '.php';
+		$full = ROOT . DIRECTORY_SEPARATOR . $path . DIRECTORY_SEPARATOR . $name . '.php';
+		// var_dump($full);
+		require $full;
 	}
 }
-
 
  ?>

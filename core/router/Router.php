@@ -31,14 +31,19 @@ class Router
 
 	public function run()
 	{
+		$find = false;
 		if (!isset($this->_routes[$_SERVER['REQUEST_METHOD']]))
 			throw new RouterException('No ' . $_SERVER['REQUEST_METHOD'] . ' routes find');
 
 		foreach ($this->_routes[$_SERVER['REQUEST_METHOD']] as $route)
 		{
 			if ($route->match($this->_url))
+			{
+				$find = true;
 			 	$route->exec();
+			}
 		}
+		return $find;
 	}
 
 	public function url($name, $params = [])

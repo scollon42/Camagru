@@ -33,18 +33,6 @@ class Controller
 		header('location: ' . $url);
 		exit;
 	}
-
-	public function forbidden()
-	{
-		header('HTTP/1.0 403 Forbidden');
-		die('Access denied');
-	}
-
-	public function notFound()
-	{
-		header('HTTP/1.0 404 Not Found');
-		die('Page not found');
-	}
 }
 
  ?>

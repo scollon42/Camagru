@@ -2,7 +2,7 @@
 	<ul>
 		<li style="background-color: #3a9598"><a href="/">Home</a></li>
 		<li><a href="/gallery">Gallery</a></li>
-		<?php if (!$_SESSION['connected_as']): ?>
+		<?php if (!\App\App::isAuth()): ?>
 			<li><a href="/signin">Sign in</a></li>
 			<li><a href="/signup">Sign up</a></li>
 		<?php else: ?>
