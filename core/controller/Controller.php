@@ -2,6 +2,9 @@
 
 namespace Core\Controller;
 
+use \Core\Session\Session;
+use \App\Controller\Flash\Flash;
+
 class Controller
 {
 	protected 	$_viewPath;
@@ -11,8 +14,8 @@ class Controller
 
 	public function __construct()
 	{
-		$this->_session = \Core\Session\Session::getInstance();
-		$this->_flash = new \Core\Flash\Flash($this->_session);
+		$this->_session = Session::getInstance();
+		$this->_flash = new Flash($this->_session);
 	}
 
 	protected function render($view, $variables = [])

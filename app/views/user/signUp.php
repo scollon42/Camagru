@@ -1,4 +1,5 @@
- <form method="post" action="signUp">
+<section>
+ <form method="post" action="/signup">
  	<label for="login">Login</label>
  	<input type="text" placeholder="Your login" required="Required field" class="form" id="login" name="login" />
  	<label for="password">Password</label>
@@ -9,3 +10,4 @@
  	<input type="mail" placeholder="Your@mail.ex" required="Required field" class="form" id="mail" name="mail" />
  	<button type="submit">Sign Up</button>
  </form>
+<section>

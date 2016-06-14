@@ -49,7 +49,10 @@ class Route
 			$controller = "App\\Controller\\" . $params[0] . "Controller";
 			$controller = new $controller();
 			$action = $params[1];
-			return $controller->$action();
+			if (empty($this->_matches))
+				return $controller->$action();
+			else
+				return $controller->$action($this->_matches);
 		}
 		else
 		{

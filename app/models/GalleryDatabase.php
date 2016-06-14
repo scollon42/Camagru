@@ -43,6 +43,30 @@ class GalleryDatabase
 		return ($img);
 	}
 
+	public function getImageWhere($cond, $limit = false, $inv = false)
+	{
+		// TODO :  PUT A PROTECTION ON $cond !!!
+		$sql = "SELECT * FROM `gallery` ORDER BY $cond";
+		if ($inv)
+			$sql = $sql . ' DESC';
+		if ($limit)
+		{
+			$sql = $sql . ' LIMIT ' . $limit;
+			settype($limit, 'integer');
+		}
+		try
+		{
+			$query = $this->_db->query($sql);
+			$img = $query->fetchAll();
+		}
+		catch (Exception $e)
+		{
+			die ('Error ' . $e->getMessage());
+		}
+
+		return ($img);
+	}
+
 	public function getUserGallery($user_id)
 	{
 		if (!$user_id || !is_numeric($user_id))
@@ -54,7 +78,7 @@ class GalleryDatabase
 		try
 		{
 			$query = $this->_db->query($sql);
-			$gallery = $query->fetch();
+			$gallery = $query->fetchAll();
 		}
 		catch (Exception $e)
 		{
@@ -71,7 +95,7 @@ class GalleryDatabase
 		try
 		{
 			$query = $this->_db->query($sql);
-			$gallery = $query->fetch();
+			$gallery = $query->fetchAll();
 		}
 		catch (Exception $e)
 		{

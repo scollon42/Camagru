@@ -12,16 +12,19 @@ $session = \Core\Session\Session::getInstance();
 $router = new \Core\Router\Router($_GET['url']);
 
 $router->get('/', 'Index#home');
-$router->get('/signIn', 'User#signIn');
-$router->get('/signUp', 'User#signUp');
-$router->post('/signUp', 'User#signUp');
-$router->post('/signIn', 'User#signIn');
+$router->get('/signin', 'User#signIn');
+$router->get('/signup', 'User#signUp');
+$router->post('/signup', 'User#signUp');
+$router->post('/signin', 'User#signIn');
 
-$router->get('/me', 'User#show');
+$router->get('/studio', 'User#show');
 $router->get('/me/logout', 'User#logout');
-$router->get('/me/update', 'User#update');
-$router->post('/me/update', 'User#update');
+$router->get('/me', 'User#update');
+$router->post('/me', 'User#update');
 $router->post('/me/delete', 'User#delete');
+
+$router->get('/gallery', 'Gallery#gallery');
+$router->get('/gallery/:id', 'Gallery#showImage');
 
 $router->run();
 

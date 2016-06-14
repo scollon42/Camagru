@@ -13,7 +13,6 @@ use \App\Models\Exception;
 
 class UsersDatabase
 {
-
 	private 		$_db;
 	private static 	$_instance;
 
@@ -252,7 +251,6 @@ class UsersDatabase
 		}
 
 		return (True);
-
 	}
 
 	/*

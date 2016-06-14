@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use \App\Controller\AppController;
-use \App\Models\UsersDatabase;
 use \Core\Session\Session;
 use \Core\Flash\Flash;
 
@@ -12,18 +11,10 @@ use \Core\Flash\Flash;
  */
 class UserController extends AppController
 {
-	private	$_userDb;
-
-	public function __construct()
-	{
-		parent::__construct();
-		$this->_userDb = UsersDatabase::getInstance();
-	}
-
 	public function signIn()
 	{
 		if ($this->_session->exists('connected_as'))
-			$this->redirect('/me');
+			$this->redirect('/studio');
 
 		if (!empty($_POST))
 		{
@@ -33,7 +24,7 @@ class UserController extends AppController
 			{
 				$this->_session['connected_as'] = $user['id'];
 				$this->_flash->addFlash('You are now connected !');
-				$this->redirect('/me');
+				$this->redirect('/studio');
 			}
 			else
 				$this->_flash->addFlash('Something wrong happened', 'error');
@@ -70,11 +61,11 @@ class UserController extends AppController
 	public function show()
 	{
 		if (!$this->_session->exists('connected_as'))
-			$this->redirect('/signIn');
+			$this->redirect('/signin');
 
 		$userInfo = $this->_userDb->getUserById($this->_session['connected_as']);
 		if (!$userInfo)
-			$this->redirect('/signIn');
+			$this->redirect('/signin');
 
 		$user = array(
 			'login' => ucfirst($userInfo['login']),
@@ -82,13 +73,13 @@ class UserController extends AppController
 			'cdate' => $userInfo['creation_date']
 		);
 
-		$this->render('user.show', compact('user'));
+		$this->render('user.studio', compact('user'));
 	}
 
 	public function update()
 	{
 		if (!$this->_session->exists('connected_as'))
-			$this->redirect('/signIn');
+			$this->redirect('/signin');
 
 		if (!empty($_POST))
 		{
@@ -108,8 +99,9 @@ class UserController extends AppController
 			$this->redirect('/');
 		}
 
-		$this->_flash->addFlash('Account destroyed');
+		$this->_galleryDb->deleteUserGallery($this->_session['connected_as']);
 		$this->_userDb->deleteUserAccount($this->_session['connected_as']);
+		$this->_flash->addFlash('Account and gallery destroyed');
 		$this->redirect('/me/logout');
 	}
 }

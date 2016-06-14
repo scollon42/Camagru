@@ -8,7 +8,8 @@ class IndexController extends AppController
 {
 	public function home()
 	{
-		$this->render('home');
+		$gallery = $this->_galleryDb->getImageWhere('creation_date', 3, true);
+		$this->render('home', compact('gallery'));
 	}
 }
 

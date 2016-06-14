@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Flash;
+namespace App\Controller\Flash;
 
 use \Core\Session\Session;
 
