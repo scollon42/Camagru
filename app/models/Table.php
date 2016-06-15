@@ -25,7 +25,7 @@ class Table
 		$sql = "SELECT COUNT(id) as count
 				FROM `{$this->table}`";
 
-		$ret = $this->execute($sql);
+		$ret = $this->execute($sql, false);
 		return ($ret['count']);
 	}
 
@@ -60,6 +60,18 @@ class Table
 		return ($ret);
 	}
 
+	public function getAllByQuery(array $query)
+	{
+		$sql = "SELECT * FROM `$this->table`";
+		if (key_exists('where', $query))
+			$sql = $sql . ' WHERE ' . $query['where'];
+		if (key_exists('order', $query))
+			$sql = $sql . ' ORDER BY ' . $query['order'];
+		if (key_exists('limit', $query))
+			$sql = $sql . ' LIMIT ' . $query['limit'];
+		return ($this->execute($sql));
+	}
+
 	public function delete($name, $content)
 	{
 		// $name = $this->db->quote($name);
@@ -70,7 +82,7 @@ class Table
 		$this->update($sql);
 	}
 
-	protected function execute($sql, $all = true)
+	public function execute($sql, $all = true)
 	{
 		try
 		{
@@ -91,7 +103,7 @@ class Table
 		return ($ret);
 	}
 
-	protected function update($sql)
+	public function update($sql)
 	{
 		try
 		{
@@ -106,7 +118,7 @@ class Table
 		}
 	}
 
-	protected function updateWith($sql, Array $exec)
+	public function updateWith($sql, Array $exec)
 	{
 		try
 		{

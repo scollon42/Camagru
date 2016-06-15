@@ -15,6 +15,7 @@ class AppController extends Controller
 {
 	protected	$userDb;
 	protected	$galleryDb;
+	protected	$commentDb;
 	protected 	$template = 'default';
 
 	public function __construct()
@@ -24,7 +25,7 @@ class AppController extends Controller
 		$this->viewPath = ROOT . $vpath;
 		$this->userDb = new UsersTable();
 		$this->galleryDb = new GalleryTable();
-		$this->commentsDb = new CommentsTable();
+		$this->commentDb = new CommentsTable();
 	}
 }
 

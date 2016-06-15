@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use \App\App;
 use \App\Controller\AppController;
+use \App\Controller\Pager\Pager;
 use \Core\Session\Session;
 use \Core\Flash\Flash;
 
@@ -11,18 +12,11 @@ class GalleryController extends AppController
 {
 	public function gallery()
 	{
-		// Pagination TMP
-		$count = $this->galleryDb->count();
-		$nbpage = ceil($count / 6);
-		if (isset($_GET['p']) && $_GET['p'] <= $nbpage && $_GET['p'] > 0)
-			$cpage = $_GET['p'];
-		else
-			$cpage = 1;
-
-		$p = ($cpage - 1) * 6;
-
-		$gallery = $this->galleryDb->getImageWhere('creation_date', "$p,6", true);
-		$this->render('user.gallery', compact('gallery', 'nbpage', 'cpage'));
+		$pager = new Pager($this->galleryDb->count(), 6);
+		$p = $pager->prepare();
+		$gallery = $this->galleryDb->getAllByQuery(['order' => 'creation_date',
+													'limit' => "$p,6"]);
+		$this->render('user.gallery', compact('gallery', 'pager'));
 	}
 
 	public function showImage(Array $matches)
@@ -34,22 +28,53 @@ class GalleryController extends AppController
 		$user = $this->userDb->getBy('id', $image['user_id']);
 		if (!$user)
 			$this->redirect('/gallery');
-
-		$this->render('user.image', compact('image', 'user'));
+// Ugly but TMP
+		$comment = $this->commentDb->execute("	SELECT * FROM `comments`
+												INNER JOIN `users`
+													ON `comments`.user_id = `users`.id
+												WHERE `comments`.image_id = $id
+												ORDER BY `comments`.creation_date DESC");
+		$this->render('user.image', compact('image', 'user', 'comment'));
 	}
 
 	public function addComment(Array $matches)
 	{
+		if (!App::isAuth())
+			$this->redirect('/');
+
+		if (!empty($_POST))
+		{
+			extract($_POST);
+			$id = $matches[0];
+			$image = $this->galleryDb->getBy('id', $id);
+			if (!$image)
+				$this->redirect('/gallery');
+
+			$user = $this->userDb->getBy('id', $this->session['connected_as']);
+			if (!$user)
+				$this->redirect('/gallery');
+
+			$this->commentDb->addComment($user['id'], $image['id'], $content);
+			$this->flash->addFlash('Comment added !');
+			$this->redirect('/gallery/' . $id);
+		}
+		else
+			$this->redirect('/gallery');
+	}
+
+	public function delComment(Array $matches)
+	{
+		if (!App::isAuth())
+			$this->redirect('/');
+
 		$id = $matches[0];
-		$image = $this->galleryDb->getBy('id', $id);
-		if (!$image)
-			$this->redirect('/gallery');
+		$comment = $this->commentDb->getBy('id', $id);
+		if (!$comment || $comment['user_id'] != $this->session['connected_as'])
+			$this->redirect('/');
 
-		$user = $this->userDb->getBy('id', $this->session['connected_as']);
-		if (!$user)
-			$this->redirect('/gallery');
-
-		$this->redirect('/gallery/' . $id);
+		$this->commentDb->delete('id', $id);
+		$this->flash->addFlash('Comment deleted');
+		$this->redirect('/gallery');
 	}
 }
 

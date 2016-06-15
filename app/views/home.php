@@ -29,15 +29,17 @@
 <div class='home-content'>
 	<?php foreach ($gallery as $image) { ?>
 		<div>
-			<a href="/gallery/<?php echo $image['id']; ?>">
-				<img style="border-radius: 0" src="<?php echo $image['image_path'] . '/' . $image['name']; ?>"/>
+			<a href="/gallery/<?= $image['id']; ?>">
+				<img style="border-radius: 0" src="<?= $image['image_path'] . '/' . $image['name']; ?>"/>
 			</a>
-			<p style="float:right"><img style="width:20px;margin-right:5px;border-radius:0 ;box-shadow:none"src="http://www.aguainmaculada.com/path/official-facebook-logo-like.png"/><?php echo $image['image_like']; ?></p>
+			<p style="float:right"><img style="width:20px;margin-right:5px;border-radius:0 ;box-shadow:none"src="http://www.aguainmaculada.com/path/official-facebook-logo-like.png"/><?= $image['image_like']; ?></p>
 		</div>
 	<?php } ?>
 </div>
+<p style='width:20%;margin: 0 auto;'><a href='/gallery'><button style='width:100%'>Show the gallery !</button></a></p>
 
 <hr />
+<? if (!\App\App::isAuth()): ?>
 <div class='home-content'>
 	<h3>Not one of us ? Sign up !</h3>
 	<form method='post' action="/signup">
@@ -52,5 +54,6 @@
 		<button type="submit">Sign Up</button>
 	</form>
 </div>
+<? endif; ?>
 <hr />
 </session>

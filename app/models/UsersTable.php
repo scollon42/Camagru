@@ -8,6 +8,7 @@
 
 namespace App\Models;
 
+use \App\App;
 use \App\Models\Database;
 
 class UsersTable extends Table

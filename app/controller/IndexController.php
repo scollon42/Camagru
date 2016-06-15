@@ -9,7 +9,8 @@ class IndexController extends AppController
 {
 	public function home()
 	{
-		$gallery = $this->galleryDb->getImageWhere('creation_date', 3, true);
+		$gallery = $this->galleryDb->getAllByQuery(['order' => 'creation_date',
+													'limit' => 3]);
 		$this->render('home', compact('gallery'));
 	}
 }

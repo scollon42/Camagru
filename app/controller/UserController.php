@@ -2,10 +2,10 @@
 
 namespace App\Controller;
 
-use \App\App;
 use \App\Controller\AppController;
 use \Core\Session\Session;
 use \Core\Flash\Flash;
+use \App\App;
 
 /**
  *
@@ -36,6 +36,8 @@ class UserController extends AppController
 
 	public function signUp()
 	{
+		if (App::isAuth())
+			$this->redirect('/studio');
 		$errors = False;
 		if (!empty($_POST))
 		{
