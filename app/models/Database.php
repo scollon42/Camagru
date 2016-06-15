@@ -5,16 +5,16 @@ namespace App\Models;
 
 class Database
 {
-	private static $_instance;
-	private	static $_db;
+	private static $instance;
+	private	static $db;
 
 	public static function getDb()
 	{
-		if (is_null(self::$_instance))
+		if (is_null(self::$instance))
 		{
-			self::$_instance = new Database();
+			self::$instance = new Database();
 		}
-		return self::$_db;
+		return self::$db;
 	}
 
 	public function __construct()
@@ -22,9 +22,9 @@ class Database
 		require ROOT . '/config/database.php';
 		try
 		{
-			self::$_db = new \PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
-			self::$_db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-			self::$_db->exec("USE `db_camagru`");
+			self::$db = new \PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
+			self::$db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+			self::$db->exec("USE `db_camagru`");
 		}
 		catch (Exception $e)
 		{

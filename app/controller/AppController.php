@@ -2,26 +2,27 @@
 
 namespace App\Controller;
 
-use Core\Controller\Controller;
-use \App\Models\UsersDatabase;
-use \App\Models\GalleryDatabase;
+use \App\App;
+use \Core\Controller\Controller;
+use \App\Models\Users;
+use \App\Models\Gallery;
 
 /**
  *
  */
 class AppController extends Controller
 {
-	protected	$_userDb;
-	protected	$_galleryDb;
-	protected 	$_template = 'default';
+	protected	$userDb;
+	protected	$galleryDb;
+	protected 	$template = 'default';
 
 	public function __construct()
 	{
 		parent::__construct();
 		$vpath = str_replace('/', DIRECTORY_SEPARATOR, '/app/views/');
-		$this->_viewPath = ROOT . $vpath;
-		$this->_userDb = UsersDatabase::getInstance();
-		$this->_galleryDb = GalleryDatabase::getInstance();
+		$this->viewPath = ROOT . $vpath;
+		$this->userDb = new Users();
+		$this->galleryDb = new Gallery();
 	}
 }
 

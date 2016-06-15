@@ -5,14 +5,14 @@ namespace Core\Session;
 class Session implements SessionInterface, \ArrayAccess
 {
 
-	static private $_instance;
+	static private $instance;
 
 
 	static public function getInstance()
 	{
-		if (is_null(self::$_instance))
-			self::$_instance = new Session();
-		return self::$_instance;
+		if (is_null(self::$instance))
+			self::$instance = new Session();
+		return self::$instance;
 	}
 
     public function __construct()

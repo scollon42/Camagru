@@ -10,13 +10,13 @@ use \Core\Router\Route;
 class Router
 {
 
-	private $_url;
-	private $_routes = [];
-	private $_nameRoutes = [];
+	private $url;
+	private $routes = [];
+	private $nameRoutes = [];
 
 	public function __construct($url = '/')
 	{
-		$this->_url = $url;
+		$this->url = $url;
 	}
 
 	public function get($path, $callable, $name = NULL)
@@ -32,12 +32,12 @@ class Router
 	public function run()
 	{
 		$find = false;
-		if (!isset($this->_routes[$_SERVER['REQUEST_METHOD']]))
+		if (!isset($this->routes[$_SERVER['REQUEST_METHOD']]))
 			throw new RouterException('No ' . $_SERVER['REQUEST_METHOD'] . ' routes find');
 
-		foreach ($this->_routes[$_SERVER['REQUEST_METHOD']] as $route)
+		foreach ($this->routes[$_SERVER['REQUEST_METHOD']] as $route)
 		{
-			if ($route->match($this->_url))
+			if ($route->match($this->url))
 			{
 				$find = true;
 			 	$route->exec();
@@ -48,23 +48,23 @@ class Router
 
 	public function url($name, $params = [])
 	{
-		if (!isset($this->_nameRoutes[$name]))
+		if (!isset($this->nameRoutes[$name]))
 		{
 			throw new RouterException('No route matches this name');
 		}
 
-		return $this->_nameRoutes[$name]->getUrl($params);
+		return $this->nameRoutes[$name]->getUrl($params);
 	}
 
 	private function add($path, $callable, $name, $method)
 	{
 		$route = new Route($path, $callable);
-		$this->_routes[$method][] = $route;
+		$this->routes[$method][] = $route;
 		if (is_string($callable) && $name === NULL)
 			$name = $callable;
 
 		if ($name)
-			$this->_nameRoutes[$name] = $route;
+			$this->nameRoutes[$name] = $route;
 		return $route;
 	}
 

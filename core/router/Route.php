@@ -8,21 +8,21 @@ namespace Core\Router;
 class Route
 {
 
-	private $_path;
-	private $_callable;
-	private $_matches = [];
-	private $_params = [];
+	private $path;
+	private $callable;
+	private $matches = [];
+	private $params = [];
 
 	public function __construct($path, $callable)
 	{
-		$this->_path = trim($path, '/');
-		$this->_callable = $callable;
+		$this->path = trim($path, '/');
+		$this->callable = $callable;
 	}
 
 	public function match($url)
 	{
 		$url = trim($url, '/');
-		$path = preg_replace_callback('#:([\w]+)#', [$this, 'paramMatch'], $this->_path);
+		$path = preg_replace_callback('#:([\w]+)#', [$this, 'paramMatch'], $this->path);
 		$regex = "#^$path$#i";
 
 		if (!preg_match($regex, $url, $matches))
@@ -31,38 +31,38 @@ class Route
 		}
 
 		array_shift($matches);
-		$this->_matches = $matches;
+		$this->matches = $matches;
 		return True;
 	}
 
 	public function with($param, $reg)
 	{
-		$this->_params[$params] = str_replace('(', '(?:', $regex);
+		$this->params[$params] = str_replace('(', '(?:', $regex);
 		return $this;
 	}
 
 	public function exec()
 	{
-		if (is_string($this->_callable))
+		if (is_string($this->callable))
 		{
-			$params = explode('#', $this->_callable);
+			$params = explode('#', $this->callable);
 			$controller = "App\\Controller\\" . $params[0] . "Controller";
 			$controller = new $controller();
 			$action = $params[1];
-			if (empty($this->_matches))
+			if (empty($this->matches))
 				return $controller->$action();
 			else
-				return $controller->$action($this->_matches);
+				return $controller->$action($this->matches);
 		}
 		else
 		{
-			return call_user_func_array($this->_callable, $this->_matches);
+			return call_user_func_array($this->callable, $this->matches);
 		}
 	}
 
 	public function getUrl(array $params)
 	{
-		$path = $this->_path;
+		$path = $this->path;
 
 		foreach($params as $key => $value)
 		{
@@ -74,9 +74,9 @@ class Route
 
 	private function paramMatch($match)
 	{
-		if (isset($this->_params[$match[1]]))
+		if (isset($this->params[$match[1]]))
 		{
-			return '(' . $this->_params[$match[1]] . ')';
+			return '(' . $this->params[$match[1]] . ')';
 		}
 		else
 		{

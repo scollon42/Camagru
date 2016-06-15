@@ -18,7 +18,7 @@ $routes = [
 		'/me/logout' => 'User#logout',
 		'/me' => 'User#update',
 		'/gallery' => 'Gallery#gallery',
-		'/gallery/:id' => 'Gallery#showImage',
+		'/gallery/:id' => 'Gallery#showImage'
 	],
 
 	// Post array
@@ -27,7 +27,8 @@ $routes = [
 		'/signup' => 'User#signUp',
 		'/signin' => 'User#signIn',
 		'/me' => 'User#update',
-		'/me/delete' => 'User#delete'
+		'/me/delete' => 'User#delete',
+		'/gallery/:id' => 'Gallery#addComment'
 	]
 ];
 

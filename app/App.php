@@ -7,50 +7,60 @@ use \Core\Router\Router;
 
 Class App
 {
-	static private $_loaded;
-	static private $_session;
-	static private $_router;
-	static private $_routes;
+	static private $loaded;
+	static private $session;
+	static private $router;
+	static private $routes;
 
+
+// Functions used to start the application
 	public static function load()
 	{
 		require implode(DIRECTORY_SEPARATOR, array(ROOT, 'app', 'ressources', 'config', 'routes.php'));
 
-		self::$_session = Session::getInstance();
-		self::$_router = new Router($_GET['url']);
-		self::$_routes = $routes;
+		self::$session = Session::getInstance();
+		self::$router = new Router($_GET['url']);
+		self::$routes = $routes;
 		self::loadRoutes();
-		self::$_loaded = True;
+		self::$loaded = True;
 	}
 
 	public static function run()
 	{
-		if (is_null(self::$_loaded))
+		if (is_null(self::$loaded))
 			throw new Exception('Unload App class');
 		else
 		{
-			if (!self::$_router->run())
+			if (!self::$router->run())
 				self::notFound();
 		}
 	}
 
-	public static function isAuth()
-	{
-		return (self::$_session->exists('connected_as'));
-	}
-
-
 	private static function loadRoutes()
 	{
-		foreach (self::$_routes['get'] as $route => $action)
+		foreach (self::$routes['get'] as $route => $action)
 		{
-			self::$_router->get($route, $action);
+			self::$router->get($route, $action);
 		}
-		foreach (self::$_routes['post'] as $route => $action)
+		foreach (self::$routes['post'] as $route => $action)
 		{
-			self::$_router->post($route, $action);
+			self::$router->post($route, $action);
 		}
 	}
+
+
+// Utils function for App core
+	public static function isAuth()
+	{
+		return (self::$session->exists('connected_as'));
+	}
+
+	public static function auth($id)
+	{
+		self::$session->set('connected_as', $id);
+	}
+
+// Those functions will be used in case of errors
 
 	public static function forbidden()
 	{
@@ -63,6 +73,7 @@ Class App
 		header('HTTP/1.0 404 Not Found');
 		die('Page not found');
 	}
+
 
 }
 

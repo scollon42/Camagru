@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use \App\App;
 use \App\Controller\AppController;
 use \Core\Session\Session;
 use \Core\Flash\Flash;
@@ -13,21 +14,21 @@ class UserController extends AppController
 {
 	public function signIn()
 	{
-		if ($this->_session->exists('connected_as'))
+		if (App::isAuth())
 			$this->redirect('/studio');
 
 		if (!empty($_POST))
 		{
 			extract($_POST);
-			$user = $this->_userDb->getUserByAuth($login, $password);
+			$user = $this->userDb->getUserByAuth($login, $password);
 			if ($user != False)
 			{
-				$this->_session['connected_as'] = $user['id'];
-				$this->_flash->addFlash('You are now connected !');
+				App::auth($user['id']);
+				$this->flash->addFlash('You are now connected !');
 				$this->redirect('/studio');
 			}
 			else
-				$this->_flash->addFlash('Something wrong happened', 'error');
+				$this->flash->addFlash('Something wrong happened', 'error');
 		}
 
 		$this->render('user.signIn');
@@ -39,31 +40,31 @@ class UserController extends AppController
 		if (!empty($_POST))
 		{
 			extract($_POST);
-			$token = $this->_userDb->addNewUser(compact('login', 'password', 'mail'));
+			$token = $this->userDb->addNewUser(compact('login', 'password', 'mail'));
 			if ($token != False)
 			{
-				$this->_flash->addFlash('Account created ! You can connect yourself and join us :)');
+				$this->flash->addFlash('Account created ! You can connect yourself and join us :)');
 				$this->redirect('/');
 			}
 			else
-				$this->_flash->addFlash('Something wrong happened', 'error');
+				$this->flash->addFlash('Something wrong happened', 'error');
 		}
 		$this->render('user.signUp', compact('errors'));
 	}
 
 	public function logout()
 	{
-		$this->_session->delete('connected_as');
-		$this->_flash->addFlash('You are now logout !');
+		$this->session->delete('connected_as');
+		$this->flash->addFlash('You are now logout !');
 		$this->redirect('/');
 	}
 
 	public function show()
 	{
-		if (!$this->_session->exists('connected_as'))
+		if (!App::isAuth())
 			$this->redirect('/signin');
 
-		$userInfo = $this->_userDb->getUserById($this->_session['connected_as']);
+		$userInfo = $this->userDb->getBy('id', $this->session['connected_as']);
 		if (!$userInfo)
 			$this->redirect('/signin');
 
@@ -78,30 +79,31 @@ class UserController extends AppController
 
 	public function update()
 	{
-		if (!$this->_session->exists('connected_as'))
+		if (!App::isAuth())
 			$this->redirect('/signin');
 
 		if (!empty($_POST))
 		{
 			extract($_POST);
-			$this->_userDb->updateUserPassword($this->_session['connected_as'], $password);
-			$this->_flash->addFlash('Password updated');
+			$this->userDb->updateUserPassword($this->session['connected_as'], $password);
+			$this->flash->addFlash('Password updated');
 		}
-		$user = $this->_userDb->getUserById($this->_session['connected_as']);
+		$user = $this->userDb->getBy('id', $this->session['connected_as']);
 		$this->render('user.update', compact('user'));
 	}
 
 
 	public function delete()
 	{
-		if (!$this->_session->exists('connected_as') || !isset($_POST['delete']))
-		{
+		if (!App::isAuth() || !isset($_POST['delete']))
 			$this->redirect('/');
-		}
 
-		$this->_galleryDb->deleteUserGallery($this->_session['connected_as']);
-		$this->_userDb->deleteUserAccount($this->_session['connected_as']);
-		$this->_flash->addFlash('Account and gallery destroyed');
+		$user_id = $this->session['connected_as'];
+
+		$this->galleryDb->delete('user_id', $user_id);
+		$this->userDb->delete('id', $user_id);
+
+		$this->flash->addFlash('Account and gallery destroyed');
 		$this->redirect('/me/logout');
 	}
 }
