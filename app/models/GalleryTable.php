@@ -4,7 +4,7 @@ namespace App\Models;
 
 use \App\Models\Database;
 
-class Gallery extends Table
+class GalleryTable extends Table
 {
 
 	public function getImageWhere($cond, $limit = false, $inv = false)

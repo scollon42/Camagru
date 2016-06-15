@@ -4,8 +4,9 @@ namespace App\Controller;
 
 use \App\App;
 use \Core\Controller\Controller;
-use \App\Models\Users;
-use \App\Models\Gallery;
+use \App\Models\UsersTable;
+use \App\Models\GalleryTable;
+use \App\Models\CommentsTable;
 
 /**
  *
@@ -21,8 +22,9 @@ class AppController extends Controller
 		parent::__construct();
 		$vpath = str_replace('/', DIRECTORY_SEPARATOR, '/app/views/');
 		$this->viewPath = ROOT . $vpath;
-		$this->userDb = new Users();
-		$this->galleryDb = new Gallery();
+		$this->userDb = new UsersTable();
+		$this->galleryDb = new GalleryTable();
+		$this->commentsDb = new CommentsTable();
 	}
 }
 

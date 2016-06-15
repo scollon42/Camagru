@@ -60,6 +60,21 @@ Class App
 		self::$session->set('connected_as', $id);
 	}
 
+	public static function hash($str)
+	{
+		$char = '$^~';
+		$hash = hash('sha512', $char.$str);
+		$hash = hash("whirlpool", $hash);
+		return ($hash);
+	}
+
+	public static function generateToken()
+	{
+		$token = md5(rand(0, 100));
+		return ($token);
+	}
+
+
 // Those functions will be used in case of errors
 
 	public static function forbidden()

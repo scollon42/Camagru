@@ -10,8 +10,9 @@ class Table
 	public function __construct()
 	{
 		$name = explode('\\', get_class($this));
-		$name = strtolower(array_pop($name));
-		$this->table = $name;
+		$name = str_replace('Table', '', array_pop($name));
+		$table = strtolower($name);
+		$this->table = $table;
 		$this->db = Database::getDb();
 	}
 

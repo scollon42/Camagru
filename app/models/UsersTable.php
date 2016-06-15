@@ -10,7 +10,7 @@ namespace App\Models;
 
 use \App\Models\Database;
 
-class Users extends Table
+class UsersTable extends Table
 {
 
 	/*
@@ -22,7 +22,7 @@ class Users extends Table
 		if (!$login || !$password)
 			return (False);
 
-		$hashPassword = $this->_hashPassword($password);
+		$hashPassword = App::hash($password);
 
 		$user = $this->getBy('login', $login);
 
@@ -51,8 +51,8 @@ class Users extends Table
 			return (False);
 
 		// if no users are finded we can add the new user
-		$hashPassword = $this->_hashPassword($password);
-		$userToken = $this->_generateUserToken();
+		$hashPassword = App::hash($password);
+		$userToken = App::generateToken();
 
 		$sql = "INSERT INTO {$this->table}
 					(`login`, `password`, `mail`, `token`)
@@ -78,7 +78,7 @@ class Users extends Table
 		if (!$user)
 			return (False);
 
-		$hashPassword = $this->_hashPassword($password);
+		$hashPassword = App::hash($password);
 
 		if ($user['password'] == $hashPassword)
 			return (True);
@@ -108,23 +108,6 @@ class Users extends Table
 		return (True);
 	}
 
-	/*
-	**	Private functions
-	*/
-
-	private function _hashPassword($password)
-	{
-		$char = '$^~';
-		$hash = hash('sha512', $char.$password);
-		$hash = hash("whirlpool", $hash);
-		return ($hash);
-	}
-
-	private function _generateUserToken()
-	{
-		$token = md5(rand(0, 100));
-		return ($token);
-	}
 }
 
  ?>

@@ -4,7 +4,7 @@ namespace App\Models;
 
 use \App\Models\Database;
 
-class Comments extends Table
+class CommentsTable extends Table
 {
 	// Public function
 
