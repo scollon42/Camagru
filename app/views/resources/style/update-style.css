@@ -1,0 +1,11 @@
+.user-update {
+	margin-top: 50px;
+}
+
+#destroy {
+	background-color: #cd1212;
+}
+
+#destroy:hover {
+	background-color: #ff0303;
+}

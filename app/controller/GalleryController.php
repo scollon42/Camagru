@@ -12,29 +12,28 @@ class GalleryController extends AppController
 {
 	public function gallery()
 	{
-		$pager = new Pager($this->galleryDb->count(), 6);
+		$pager = new Pager($this->table->gallery->count(), 6);
 		$p = $pager->prepare();
-		$gallery = $this->galleryDb->getAllByQuery(['order' => 'creation_date',
+		$gallery = $this->table->gallery->getAllByQuery(['order' => 'creation_date',
 													'limit' => "$p,6"]);
-		$this->render('user.gallery', compact('gallery', 'pager'));
+		$this->render('gallery', compact('gallery', 'pager'));
 	}
 
 	public function showImage(Array $matches)
 	{
 		$id = $matches[0];
-		$image = $this->galleryDb->getBy('id', $id);
+		$image = $this->table->gallery->getBy('id', $id);
 		if (!$image)
 			$this->redirect('/gallery');
 		$user = $this->userDb->getBy('id', $image['user_id']);
 		if (!$user)
 			$this->redirect('/gallery');
-// Ugly but TMP
-		$comment = $this->commentDb->execute("	SELECT * FROM `comments`
-												INNER JOIN `users`
-													ON `comments`.user_id = `users`.id
-												WHERE `comments`.image_id = $id
-												ORDER BY `comments`.creation_date DESC");
-		$this->render('user.image', compact('image', 'user', 'comment'));
+		$comment = $this->commentDb->execute("SELECT * FROM `comments`
+								INNER JOIN `users`
+								ON `comments`.user_id = `users`.id
+								WHERE `comments`.image_id = $id
+								ORDER BY `comments`.creation_date DESC");
+		$this->render('image', compact('image', 'user', 'comment'));
 	}
 
 	public function addComment(Array $matches)
@@ -46,7 +45,7 @@ class GalleryController extends AppController
 		{
 			extract($_POST);
 			$id = $matches[0];
-			$image = $this->galleryDb->getBy('id', $id);
+			$image = $this->table->gallery->getBy('id', $id);
 			if (!$image)
 				$this->redirect('/gallery');
 
@@ -72,9 +71,11 @@ class GalleryController extends AppController
 		if (!$comment || $comment['user_id'] != $this->session['connected_as'])
 			$this->redirect('/');
 
+		$url = App::getRouter()->url('Gallery#showImage', [ 'id' => $comment['image_id'] ]);
+
 		$this->commentDb->delete('id', $id);
 		$this->flash->addFlash('Comment deleted');
-		$this->redirect('/gallery');
+		$this->redirect('/' . $url);
 	}
 }
 

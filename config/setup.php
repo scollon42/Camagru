@@ -8,7 +8,7 @@
 	{
 		$pdo->exec("CREATE DATABASE IF NOT EXISTS`db_camagru`");
 		$pdo->exec("USE `db_camagru`");
-		$pdo->exec("CREATE TABLE `users`
+		$pdo->exec("CREATE TABLE IF NOT EXISTS `users`
 					(
 						id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
 						login VARCHAR(16) NOT NULL,
@@ -19,7 +19,7 @@
 						creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 					)"
 		);
-		$pdo->exec("CREATE TABLE `gallery`
+		$pdo->exec("CREATE TABLE IF NOT EXISTS `gallery`
 					(
 						id INT(4) NOT NULL AUTO_INCREMENT,
 						imagepath VARCHAR(255) NOT NULL,
@@ -31,7 +31,7 @@
 					)"
 		);
 
-		$pdo->exec("CREATE TABLE `comments`
+		$pdo->exec("CREATE TABLE IF NOT EXISTS `comments`
 					(
 						id INT(4) NOT NULL AUTO_INCREMENT,
 						`content` TEXT NOT NULL,

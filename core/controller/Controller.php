@@ -28,8 +28,12 @@ class Controller
 		require($this->viewPath . 'templates' .  DIRECTORY_SEPARATOR . $this->template . '.php');
 	}
 
-	protected function redirect($url)
+	protected function redirect($url, $flash = false, $type = 'notice')
 	{
+		if ($flash != false)
+		{
+			$this->flash->addFlash($flash, $type);
+		}
 		header('location: ' . $url);
 		exit;
 	}

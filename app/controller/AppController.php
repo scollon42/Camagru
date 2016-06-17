@@ -4,28 +4,28 @@ namespace App\Controller;
 
 use \App\App;
 use \Core\Controller\Controller;
-use \App\Models\UsersTable;
-use \App\Models\GalleryTable;
-use \App\Models\CommentsTable;
+use \App\Models\ModelTable;
 
 /**
  *
  */
 class AppController extends Controller
 {
-	protected	$userDb;
-	protected	$galleryDb;
-	protected	$commentDb;
-	protected 	$template = 'default';
+	protected 	$table;
+	protected 	$template = 'global';
 
 	public function __construct()
 	{
 		parent::__construct();
 		$vpath = str_replace('/', DIRECTORY_SEPARATOR, '/app/views/');
 		$this->viewPath = ROOT . $vpath;
-		$this->userDb = new UsersTable();
-		$this->galleryDb = new GalleryTable();
-		$this->commentDb = new CommentsTable();
+		$this->table = new ModelTable();
+	}
+
+	// Flash::AddFlash alias
+	protected function addFlash($content, $type = 'notice')
+	{
+		$this->flash->addFlash($content, $type);
 	}
 }
 

@@ -1,0 +1,22 @@
+/* Flash notifications style */
+.flash {
+	width: 70%;
+	margin: 0 auto;
+	padding: 8px 16px;
+	box-sizing: border-box;
+	text-align: center;
+	border-radius: 5px;
+}
+
+.flash-error {
+
+	border: 0.5px solid rgb(106, 2, 2);
+	color: rgb(106, 2, 2);
+	background-color: rgba(179, 24, 24, 0.35);
+}
+
+.flash-notice {
+	border: 0.5px solid rgb(10, 84, 8);
+	color: rgb(5, 48, 4);
+	background-color: rgba(24, 179, 35, 0.35);
+}

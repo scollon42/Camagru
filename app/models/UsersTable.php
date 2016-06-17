@@ -46,10 +46,7 @@ class UsersTable extends Table
 			$mail = $userInfos['mail'];
 
 		// On this part we juste virify if user login or mail already exists
-		if ($this->getBy('login', $login))
-			return (False);
-		if ($this->getBy('mail', $mail))
-			return (False);
+
 
 		// if no users are finded we can add the new user
 		$hashPassword = App::hash($password);

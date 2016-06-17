@@ -1,0 +1,55 @@
+/* Image main layout */
+
+.image-content {
+    width: 70%;
+    margin: 0 auto;
+}
+
+.image-content img {
+    width: 100%;
+}
+
+.image-like {
+    float: right;
+}
+
+.image-like img {
+    width: 20px;
+    margin-right: 5px;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+/* Image comment css */
+
+.comment {
+    box-shadow: 2px 2px 2px black;
+    background-color: rgba(168, 231, 222, 0.59);
+    padding: 4px 8px;
+    border-radius: 5px;
+}
+
+.comment .comment-user-img {
+    width: 60px;
+    display: inline;
+    margin: 10px;
+}
+
+.comment .comment-user-name {
+    font-size: 20px;
+    display: inline;
+}
+
+.comment .comment-delete {
+    font-size: 13px;
+    text-align: right;
+}
+
+.comment .comment-content {
+    padding: 16px 32px;
+}
+
+.comment .comment-date {
+    font-size: 13px;
+    text-align: right;
+}

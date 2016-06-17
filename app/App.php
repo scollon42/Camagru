@@ -12,11 +12,10 @@ Class App
 	static private $router;
 	static private $routes;
 
-
 // Functions used to start the application
 	public static function load()
 	{
-		require implode(DIRECTORY_SEPARATOR, array(ROOT, 'app', 'ressources', 'config', 'routes.php'));
+		require implode(DIRECTORY_SEPARATOR, array(ROOT, 'app', 'config', 'routes.php'));
 
 		self::$session = Session::getInstance();
 		self::$router = new Router($_GET['url']);
@@ -74,6 +73,15 @@ Class App
 		return ($token);
 	}
 
+	public static function getRouter()
+	{
+		return (self::$router);
+	}
+
+	public static function getSession()
+	{
+		return (self::$session);
+	}
 
 // Those functions will be used in case of errors
 

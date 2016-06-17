@@ -48,6 +48,16 @@ class Session implements SessionInterface, \ArrayAccess
 	}
 
 
+	public function __isset($key)
+	{
+		return ($this->exists($key));
+	}
+
+	public function __get($key)
+	{
+		return ($this->get($key));
+	}
+
 // Functions implements for ArrayAccess interface
 
     public function offsetExists($offset)

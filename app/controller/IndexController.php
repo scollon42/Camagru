@@ -9,7 +9,7 @@ class IndexController extends AppController
 {
 	public function home()
 	{
-		$gallery = $this->galleryDb->getAllByQuery(['order' => 'creation_date',
+		$gallery = $this->table->gallery->getAllByQuery(['order' => 'creation_date',
 													'limit' => 3]);
 		$this->render('home', compact('gallery'));
 	}

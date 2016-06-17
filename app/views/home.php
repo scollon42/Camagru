@@ -1,3 +1,7 @@
+<head>
+	<link rel="stylesheet" href="/app/views/resources/style/home-style.css" />
+</head>
+
 
 <div class="home-banner1">
 	<p>Share your imagination...</p>
@@ -6,15 +10,15 @@
 <section>
 <div class='home-content'>
 	<div>
-		<img src='http://www.rajnikantvscidjokes.in/wp-content/uploads/2015/07/Q6S8rOv.jpg'/>
+		<img src='/app/views/resources/img/home-image-lion.jpg'/>
 		<p>Take it !</p>
 	</div>
 	<div>
-		<img src='/app/views/toto.jpg'/>
+		<img src='/app/views/resources/img/home-image-lion2.jpg'/>
 		<p>Change it !</p>
 	</div>
 	<div>
-		<img src='http://www.ehulool.com/wp-content/uploads/2012/07/Social-Media-Icons1.png'/>
+		<img src='/app/views/resources/img/home-social-network.jpg'/>
 		<p>Share it!</p>
 	</div>
 </div>
@@ -30,9 +34,9 @@
 	<?php foreach ($gallery as $image) { ?>
 		<div>
 			<a href="/gallery/<?= $image['id']; ?>">
-				<img style="border-radius: 0" src="<?= $image['image_path'] . '/' . $image['name']; ?>"/>
+				<img style="border-radius: 0" src="<?= $image['imagepath'] . '/' . $image['name']; ?>"/>
 			</a>
-			<p style="float:right"><img style="width:20px;margin-right:5px;border-radius:0 ;box-shadow:none"src="http://www.aguainmaculada.com/path/official-facebook-logo-like.png"/><?= $image['image_like']; ?></p>
+			
 		</div>
 	<?php } ?>
 </div>

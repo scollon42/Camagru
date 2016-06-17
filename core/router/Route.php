@@ -66,9 +66,8 @@ class Route
 
 		foreach($params as $key => $value)
 		{
-			$path = str_replace(":$key", $v, $path);
+			$path = str_replace(":$key", $value, $path);
 		}
-		var_dump($path);
 		return $path;
 	}
 
