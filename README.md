@@ -1,5 +1,7 @@
 # Camagru
 
+### Work in progress
+
 PHP project with MVC structure and without any framework or templates.
 
 ### Install it :
