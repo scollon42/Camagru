@@ -78,7 +78,7 @@ class Session implements SessionInterface, \ArrayAccess
     public function offsetUnset($offset)
     {
         return $this->delete($offset);
-    }
+    } 
 }
 
 ?>

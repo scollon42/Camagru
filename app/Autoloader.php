@@ -19,7 +19,6 @@ class Autoloader
 		$name = array_pop($path);
 		$path = strtolower(implode(DIRECTORY_SEPARATOR, $path));
 		$full = ROOT . DIRECTORY_SEPARATOR . $path . DIRECTORY_SEPARATOR . $name . '.php';
-		// var_dump($full);
 		require $full;
 	}
 }
