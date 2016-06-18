@@ -31,14 +31,14 @@
 <section>
 <h1>Last pictures added :</h1>
 <div class='home-content'>
-	<?php foreach ($gallery as $image) { ?>
+	<?php foreach ($gallery as $image): ?>
 		<div>
 			<a href="/gallery/<?= $image['id']; ?>">
 				<img style="border-radius: 0" src="<?= $image['imagepath'] . '/' . $image['name']; ?>"/>
 			</a>
 			
 		</div>
-	<?php } ?>
+	<?php endforeach; ?>
 </div>
 <p style='width:20%;margin: 0 auto;'><a href='/gallery'><button style='width:100%'>Show the gallery !</button></a></p>
 
