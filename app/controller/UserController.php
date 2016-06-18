@@ -84,24 +84,6 @@ class UserController extends AppController
 		$this->redirect('/', 'You are now logout !');
 	}
 
-	public function show()
-	{
-		if (!App::isAuth())
-			$this->redirect('/signin');
-
-		$userInfo = $this->table->users->getBy('id', $this->session['connected_as']);
-		if (!$userInfo)
-			$this->redirect('/signin');
-
-		$user = array(
-			'login' => ucfirst($userInfo['login']),
-			'mail' => $userInfo['mail'],
-			'cdate' => $userInfo['creation_date']
-		);
-
-		$this->render('studio', compact('user'));
-	}
-
 	public function update()
 	{
 		if (!App::isAuth())

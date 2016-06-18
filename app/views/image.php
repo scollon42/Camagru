@@ -4,12 +4,15 @@
 <section>
 	<h3>From <?= $user['login']; ?></h3>
 	<i>posted : <?= $image['creation_date']; ?></i>
+	<?php if ($user['id'] == \App\App::getSession()->connected_as): ?>
+		<p><a href='#'>Delete your image</a></p>
+	<?php endif; ?>
 	<hr />
 	<div>
 		<p class='image-like'><img src="/app/views/resources/img/like.png"/><?= $image['image_like']; ?></p>
 	</div>
 	<div class='image-content'>
-		<img src="<?= $image['imagepath'] . '/' . $image['name']; ?>"/>
+		<img src="<?= $image['imagepath'] . $image['name']; ?>" alt='photo'/>
 	</div>
 	<hr />
 

@@ -14,7 +14,7 @@ $routes = [
 		'/' => 'Index#home',
 		'/signin' => 'User#signIn',
 		'/signup' => 'User#signUp',
-		'/studio' => 'User#show',
+		'/studio' => 'Studio#studio',
 		'/me/logout' => 'User#logout',
 		'/me' => 'User#update',
 		'/gallery' => 'Gallery#gallery',
@@ -29,7 +29,8 @@ $routes = [
 		'/signin' => 'User#signIn',
 		'/me' => 'User#update',
 		'/me/delete' => 'User#delete',
-		'/gallery/:id' => 'Gallery#addComment'
+		'/gallery/:id' => 'Gallery#addComment',
+		'/studio/upload' => 'Studio#upload'
 	]
 ];
 

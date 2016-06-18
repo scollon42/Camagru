@@ -9,7 +9,7 @@ class GalleryTable extends Table
 
 	public function addImage($path, $name, $user_id)
 	{
-		$sql = "INSERT INTO `gallery` (`path`, `name`, `user_id`)
+		$sql = "INSERT INTO `gallery` (`imagepath`, `name`, `user_id`)
 				VALUES (:pat, :nam, :use)";
 		$exec = [
 					'pat' => $path,

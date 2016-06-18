@@ -15,7 +15,7 @@ class GalleryController extends AppController
 		$pager = new Pager($this->table->gallery->count(), 6);
 		$p = $pager->prepare();
 		$gallery = $this->table->gallery->getAllByQuery(['order' => 'creation_date',
-													'limit' => "$p,6"]);
+													'limit' => "$p,6", 'desc' => 'DESC']);
 		$this->render('gallery', compact('gallery', 'pager'));
 	}
 

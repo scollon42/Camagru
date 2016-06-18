@@ -67,8 +67,11 @@ class Table
 			$sql = $sql . ' WHERE ' . $query['where'];
 		if (key_exists('order', $query))
 			$sql = $sql . ' ORDER BY ' . $query['order'];
+		if (key_exists('desc', $query))
+			$sql = $sql . ' DESC';
 		if (key_exists('limit', $query))
 			$sql = $sql . ' LIMIT ' . $query['limit'];
+
 		return ($this->execute($sql));
 	}
 

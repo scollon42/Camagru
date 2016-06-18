@@ -1,21 +1,32 @@
 <section>
 	<h3>This is your workshop !</h3>
 	<hr>
-	<fieldset>
-		<legend>Or take a new with your webcam :</legend>
-		<video id='video'></video>
-		<button id='start'>Take it !</button>
-		<canvas id='canvas'></canvas>
-		<img src='https://u.o0bc.com/avatars/stock/_no-user-image.gif'id='photo' alt='photo'/>
-	</fieldset>
-	<br>
-	<fieldset>
-		<legend>Choose some swag :</legend>
-	</fieldset>
+
+	<form method="post" action='/studio/upload' enctype="multipart/form-data">
+	<!-- This is the webcam block -->
+		<fieldset id='webcam'>
+			<legend>Take some pictures with your camera :</legend>
+			<video id='video'></video>
+			<canvas id='canvas'></canvas>
+			<img src='https://u.o0bc.com/avatars/stock/_no-user-image.gif'id='photo' alt='photo'/>
+		</fieldset>
+		<br>
+
+	<!-- This is the upload block -->
+		<fieldset id='upload' style='display:none'>
+			<legend>Upload a picture :</legend>
+			<input type='file' name='image' id='image'/>
+		</fieldset>
+
+		<fieldset>
+			<legend>Choose some swag :</legend>
+			<p>Swag</p> 
+		</fieldset>
+		<button id='start' type='submit'>Take it !</button>
+	</form>
 </section>
 
 <script>
-
 	(function() {
 		var streaming 	= false;
 		var video 		= document.querySelector('#video');
@@ -30,6 +41,18 @@
 								navigator.webKitGetUserMedia ||
 								navigator.mozGetUserMedia ||
 								navigator.msGetUserMedia );
+			
+		//	This part of the code check if user have a cam
+		//	and if not, allow the upload method 
+		if (!navigator.getMedia) {
+			var upload = document.querySelector('#upload');
+			var webcam = document.querySelector('#webcam');
+
+			upload.style.display = 'block';
+			webcam.style.display = 'none';
+			return ;
+		}
+		
 		navigator.getMedia(
 			{
 				video: true,
@@ -75,5 +98,4 @@
 		}, false);
 
 	})();
-
 </script>

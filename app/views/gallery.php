@@ -6,13 +6,13 @@
 	<h3>This is the gallery of the site !</h3>
 	<hr>
 	<div id='gallery-content'>
-	<?php if (empty($galley)): ?>
+	<?php if (empty($gallery)): ?>
 		<p>No photos yet :( !</p>
 	<?php else: ?>
 		<?php foreach ($gallery as $image): ?>
 			<div id='gallery-image'>
 				<a href="/gallery/<?= $image['id']; ?>">
-					<img  src="<?= $image['imagepath'] . '/' . $image['name']; ?>"/>
+					<img  src="<?= $image['imagepath'] . $image['name']; ?>"/>
 				</a>
 			</div>
 		<?php endforeach; ?>
