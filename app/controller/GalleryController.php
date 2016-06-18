@@ -25,14 +25,14 @@ class GalleryController extends AppController
 		$image = $this->table->gallery->getBy('id', $id);
 		if (!$image)
 			$this->redirect('/gallery');
-		$user = $this->userDb->getBy('id', $image['user_id']);
+		$user = $this->table->users->getBy('id', $image['user_id']);
 		if (!$user)
 			$this->redirect('/gallery');
-		$comment = $this->commentDb->execute("SELECT * FROM `comments`
-								INNER JOIN `users`
-								ON `comments`.user_id = `users`.id
-								WHERE `comments`.image_id = $id
-								ORDER BY `comments`.creation_date DESC");
+		$comment = $this->table->comments->execute("SELECT * FROM `comments`
+													INNER JOIN `users`
+														ON `comments`.user_id = `users`.id
+													WHERE `comments`.image_id = $id
+													ORDER BY `comments`.creation_date DESC");
 		$this->render('image', compact('image', 'user', 'comment'));
 	}
 
@@ -49,11 +49,11 @@ class GalleryController extends AppController
 			if (!$image)
 				$this->redirect('/gallery');
 
-			$user = $this->userDb->getBy('id', $this->session['connected_as']);
+			$user = $this->table->users->getBy('id', $this->session['connected_as']);
 			if (!$user)
 				$this->redirect('/gallery');
 
-			$this->commentDb->addComment($user['id'], $image['id'], $content);
+			$this->table->comments->addComment($user['id'], $image['id'], $content);
 			$this->flash->addFlash('Comment added !');
 			$this->redirect('/gallery/' . $id);
 		}
@@ -67,13 +67,13 @@ class GalleryController extends AppController
 			$this->redirect('/');
 
 		$id = $matches[0];
-		$comment = $this->commentDb->getBy('id', $id);
+		$comment = $this->table->comments->getBy('id', $id);
 		if (!$comment || $comment['user_id'] != $this->session['connected_as'])
 			$this->redirect('/');
 
 		$url = App::getRouter()->url('Gallery#showImage', [ 'id' => $comment['image_id'] ]);
 
-		$this->commentDb->delete('id', $id);
+		$this->table->comments->delete('id', $id);
 		$this->flash->addFlash('Comment deleted');
 		$this->redirect('/' . $url);
 	}

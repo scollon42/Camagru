@@ -23,12 +23,13 @@ class UserController extends AppController
 			$user = $this->table->users->getUserByAuth($login, $password);
 			if ($user != False)
 			{
+				// if ($user['active'] == False)
+				// 	$this->redirect('/signIn', 'Account not active yet : Check your mail :)', 'error');
 				App::auth($user['id']);
-				$this->flash->addFlash('You are now connected !');
-				$this->redirect('/studio');
+				$this->redirect('/studio', 'You are now connected !');
 			}
 			else
-				$this->flash->addFlash('Something wrong happened', 'error');
+				$this->flash->addFlash('Invalid login or password', 'error');
 		}
 
 		$this->render('signIn');
@@ -79,8 +80,8 @@ class UserController extends AppController
 	public function logout()
 	{
 		$this->session->delete('connected_as');
-		$this->flash->addFlash('You are now logout !');
-		$this->redirect('/');
+
+		$this->redirect('/', 'You are now logout !');
 	}
 
 	public function show()
@@ -109,11 +110,40 @@ class UserController extends AppController
 		if (!empty($_POST))
 		{
 			extract($_POST);
-			$this->table->users->updateUserPassword($this->session['connected_as'], $password);
-			$this->flash->addFlash('Password updated');
+
+			$user = $this->table->users->getBy('id', $this->session['connected_as']);
+			if (!$user)
+				$this->redirect('/', 'Something wrong happened !', 'error');
+
+
+			if ($type === 'mail')
+			{
+				if ($mail !== $confirm)
+					$this->redirect('/me', 'Mail are not the same !', 'error');
+
+				if (!preg_match("/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/", $mail))
+					$this->redirect('/me', 'Invalid mail', 'error'); 
+
+				$this->redirect('/me', 'Email updated !');
+			}
+
+			if ($type === 'password')
+			{
+				if (App::hash($oldpassword) !== $user['password'])
+					$this->redirect('/me', 'Bad old password !', 'error');
+
+				if ($newpassword !== $confirm)
+					$this->redirect('/me', 'New password and confirm are not he same !', 'error');
+
+				if (!preg_match("/^\w{8,15}$/", $newpassword))
+					$this->redirect('/me', 'Invalid new password ! You must entrer between 8 and 15 characters.', 'error');
+				$this->table->users->updateUserPassword($user['id'], $newpassword);
+				$this->flash->addFlash('Password updated');
+			}
 		}
+		$key = uniqid('8e');
 		$user = $this->table->users->getBy('id', $this->session['connected_as']);
-		$this->render('update', compact('user'));
+		$this->render('update', compact('user', 'key'));
 	}
 
 
