@@ -1,3 +1,6 @@
+<head>
+	<link rel="stylesheet" href="/app/views/resources/style/studio-style.css" />
+</head>
 <section>
 	<h3>This is your workshop !</h3>
 	<hr>
@@ -18,14 +21,30 @@
 			<input type='file' name='image' id='image'/>
 		</fieldset>
 
-		<fieldset>
+		<fieldset id='swag-zone'>
 			<legend>Choose some swag :</legend>
-			<p>Swag</p> 
+			<input type='hidden' name='path' value='/public/images/swag/'/>
+			<div class='swag'>
+				<label for='stache'><img src='/public/images/swag/stache.png'/></label>
+				<input onclick='checked' type='radio' name='swag' value='stache' id='stache'/>
+			</div>
+			<div class='swag'>
+				<label for='joker'><img src='/public/images/swag/Illuminati.png'/></label>
+				<input onclick='checked' type='radio' name='swag' value='Illuminati' id='Illuminati' />
+			</div>
+			<div class='swag'>
+				<label for='18'><img src='/public/images/swag/18.png'/></label>
+				<input onclick='checked' type='radio' name='swag' value='18' id='18' />
+			</div>
+			<div class='swag'>
+				<label for='claw'><img src='/public/images/swag/claw.png'/></label>
+				<input onclick='checked' type='radio' name='swag' value='claw' id='claw' />
+			</div>
 		</fieldset>
+		<input type='hidden' name='user_id' value='<?= \App\App::getSession()->connected_as; ?>'/>
 		<button id='start' type='submit'>Take it !</button>
 	</form>
 </section>
-
 <script>
 	(function() {
 		var streaming 	= false;

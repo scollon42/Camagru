@@ -1,0 +1,17 @@
+#swag-zone {
+    margin: 0 auto;
+    text-align: center;
+}
+#swag-zone .swag {
+    width: 20%;
+    margin: 0 auto;
+    display: inline-block;
+}
+
+#swag-zone .swag img {
+    width: 100%;
+}
+
+button:disabled, button:disabled:hover {
+    background-color: dimgrey;
+}
