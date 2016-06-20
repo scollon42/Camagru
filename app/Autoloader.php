@@ -14,11 +14,11 @@ class Autoloader
 
  	static function autoload($class_name)
 	{
-		$class_name = str_replace('\\', DIRECTORY_SEPARATOR, $class_name);
-		$path = explode(DIRECTORY_SEPARATOR, $class_name);
+		$class_name = str_replace('\\', DIRSEP, $class_name);
+		$path = explode(DIRSEP, $class_name);
 		$name = array_pop($path);
-		$path = strtolower(implode(DIRECTORY_SEPARATOR, $path));
-		$full = ROOT . DIRECTORY_SEPARATOR . $path . DIRECTORY_SEPARATOR . $name . '.php';
+		$path = strtolower(implode(DIRSEP, $path));
+		$full = ROOT . DIRSEP . $path . DIRSEP . $name . '.php';
 		require $full;
 	}
 }

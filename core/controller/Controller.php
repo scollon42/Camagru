@@ -23,9 +23,9 @@ class Controller
 		ob_start();
 		$flash = $this->flash->getFlash();
 		extract($variables);
-		require($this->viewPath . str_replace('.', DIRECTORY_SEPARATOR, $view) . '.php');
+		require($this->viewPath . str_replace('.', DIRSEP, $view) . '.php');
 		$content = ob_get_clean();
-		require($this->viewPath . 'templates' .  DIRECTORY_SEPARATOR . $this->template . '.php');
+		require($this->viewPath . 'templates' .  DIRSEP . $this->template . '.php');
 	}
 
 	protected function redirect($url, $flash = false, $type = 'notice')

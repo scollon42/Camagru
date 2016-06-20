@@ -15,7 +15,7 @@ Class App
 // Functions used to start the application
 	public static function load()
 	{
-		require implode(DIRECTORY_SEPARATOR, array(ROOT, 'app', 'config', 'routes.php'));
+		require implode(DIRSEP, array(ROOT, 'app', 'config', 'routes.php'));
 
 		self::$session = Session::getInstance();
 		self::$router = new Router($_GET['url']);

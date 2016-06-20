@@ -9,7 +9,8 @@
 
 #gallery-image {
     margin: 1px auto;
-    width: 30%;
+    width: 20%;
+    max-width: 300px;
     display: inline-block;
     padding: 2px;
 }

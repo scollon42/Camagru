@@ -17,7 +17,7 @@ class AppController extends Controller
 	public function __construct()
 	{
 		parent::__construct();
-		$vpath = str_replace('/', DIRECTORY_SEPARATOR, '/app/views/');
+		$vpath = str_replace('/', DIRSEP, '/app/views/');
 		$this->viewPath = ROOT . $vpath;
 		$this->table = new ModelTable();
 	}

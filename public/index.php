@@ -4,8 +4,9 @@ use \App\App;
 use \App\Autoloader;
 
 define('ROOT', dirname(__DIR__));
+define('DIRSEP', DIRECTORY_SEPARATOR);
 
-require implode(DIRECTORY_SEPARATOR, array(ROOT, 'app', 'Autoloader.php'));
+require implode(DIRSEP, array(ROOT, 'app', 'Autoloader.php'));
 
 Autoloader::register();
 

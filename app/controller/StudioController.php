@@ -10,6 +10,18 @@ use \App\App;
 class StudioController extends AppController
 {
 
+    private $extensions = ['jpg', 'gif', 'png', 'jpeg' ];
+    private $uploadPath = '/public/images/upload/';
+    private $finalPath = '/public/images/camagru/';
+
+    // This little function transform $upload and $final path 
+    // in a absolute path like : C:\\...\..\
+    private static function abs($path)
+    {
+        $abs = str_replace('/', DIRSEP, $path);
+        return (ROOT . $abs);
+    }
+
     public function studio()
 	{
 		if (!App::isAuth())
@@ -35,17 +47,15 @@ class StudioController extends AppController
         if (!App::isAuth())
             $this->redirect('/');
         
-        // Extensions that the script can handle
-        $ext = ['jpg', 'gif', 'png', 'jpeg','bmp'];
-
         if (!empty($_POST))
         {
             if (!empty($_FILES['image']['name']))
             {
-                $image_extension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+                $image_extension = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
+                $image_extension = $image_extension === 'jpg' ? 'jpeg' : $image_extension;
  
                 // we test if the image_extension is handle
-                if (in_array(strtolower($image_extension), $ext))
+                if (in_array($image_extension, $this->extensions))
                 {
                     $imageinfo = getimagesize($_FILES['image']['tmp_name']);
 
@@ -62,73 +72,47 @@ class StudioController extends AppController
                         $token = $user['token'];
                         unset($user); // useless value destroyed
                         $newName = $token . md5(uniqid($user_id)) . '.' . $image_extension;
-                        $upload_path = implode(DIRECTORY_SEPARATOR, [ ROOT, 'public', 'images', 'upload' ]) . DIRECTORY_SEPARATOR;
 
                         // if upload file doesn't exist we create one
-                        if (!file_exists($upload_path))
-                            mkdir($upload_path);
+                        if (!file_exists(self::abs($this->uploadPath)))
+                            mkdir(self::abs($this->uploadPath));
 
-                        if (move_uploaded_file($_FILES['image']['tmp_name'], $upload_path . $newName))
+                        // We move the photo the upload directory
+                        if (move_uploaded_file($_FILES['image']['tmp_name'], self::abs($this->uploadPath) . $newName))
                         {
                             $swag = $_POST['swag'] . '.png';
-                            $swag_path = ROOT . str_replace('/', DIRECTORY_SEPARATOR, $_POST['path']);
+                            $swag_path = self::abs($_POST['path']);
                             $swag = $swag_path .  $swag;
 
                             $swag_image = imagecreatefrompng($swag);
 
-                            switch (strtolower($image_extension))
-                            {
-                                case 'gif':
-                                    $photo_image = imagecreatefromgif($upload_path . $newName);
-                                    break;
-                                case 'png':
-                                    $photo_image = imagecreatefrompng($upload_path . $newName);
-                                    break;
-                                case 'bmp':
-                                    $photo_image = imagecreatefromwbmp($upload_path . $newName);
-                                    break ;
-                                default:
-                                    $photo_image = imagecreatefromjpeg($upload_path . $newName);
-                                    break ;
-                            }
+                            // Generate the two GD function we need to compute image
+                            $imageCreateFc = 'imagecreatefrom' . $image_extension;
+                            $imageFc = 'image' . $image_extension;
+
+                            $photo_image = $imageCreateFc(self::abs($this->uploadPath) . $newName);
                             $src_w = imagesx($swag_image);
                             $src_h = imagesy($swag_image);
-                            $dst_w = imagesx($photo_image);
-                            $dst_h = imagesy($photo_image);
-                            $dst_x = ($dst_w - $src_w) / 2;
-                            $dst_y = ($dst_h - $src_h) / 2;
+                            $dst_x = (imagesx($photo_image) - $src_w) / 2;
+                            $dst_y = (imagesy($photo_image) - $src_h) / 2;
                         
-
+                            // Put swag on photo
                             imagecopy($photo_image, $swag_image, $dst_x, $dst_y, 0, 0, $src_w, $src_h);
                         
-                            $final_path = implode(DIRECTORY_SEPARATOR, [ ROOT, 'public', 'images', 'camagru' ]) . DIRECTORY_SEPARATOR;
-
                             // if final dir doesn't exist we create one
-                            if (!file_exists($upload_path))
-                                mkdir($final_path);
-                            
+                            if (!file_exists(self::abs($this->finalPath)))
+                                mkdir(self::abs($finalPath));
+
                             // We create the new image
-                            switch (strtolower($image_extension))
-                            {
-                                case 'gif':
-                                    imagegif($photo_image, $final_path . $newName);
-                                    break ;
-                                case 'png':
-                                    imagepng($photo_image, $final_path . $newName);
-                                    break ;
-                                case 'bmp':
-                                    imagewbmp($photo_image, $final_path . $newName);
-                                    break ;
-                                default:
-                                    imagejpeg($photo_image, $final_path . $newName);
-                                    break ;
-                            }
+                            $imageFc($photo_image, self::abs($this->finalPath) . $newName);
 
                             // We del the upload tmp image
-                            unlink($upload_path . $newName);
+                            unlink(self::abs($this->uploadPath) . $newName);
+                            imagedestroy($photo_image);
+                            imagedestroy($swag_image);
 
                             // Set it in the database
-                            $this->table->gallery->addImage('/public/images/camagru/', $newName, $user_id);
+                            $this->table->gallery->addImage($this->finalPath, $newName, $user_id);
                             $id = $this->table->gallery->getBy('name', $newName)['id'];
                             $this->redirect("/gallery/$id", 'Upload succed !');
                         }
